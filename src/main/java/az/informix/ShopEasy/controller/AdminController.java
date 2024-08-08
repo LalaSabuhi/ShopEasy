@@ -1,9 +1,12 @@
 package az.informix.ShopEasy.controller;
 
 import az.informix.ShopEasy.model.Category;
+import az.informix.ShopEasy.model.Product;
 import az.informix.ShopEasy.service.CategoryService;
+import az.informix.ShopEasy.service.ProductService;
 import jakarta.servlet.http.HttpSession;
 import jdk.jfr.Registered;
+import org.apache.catalina.LifecycleState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
@@ -18,18 +21,25 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.function.Predicate;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ProductService productService;
     @GetMapping("/")
     public String index(){
         return "admin/index";
     }
     @GetMapping("/loadAddProduct")
-    public String loadAddProduct(){
+    public String loadAddProduct(Model model){
+        List<Category> categories = categoryService.getAllCategory();
+        model.addAttribute("categories", categories);
+
         return "admin/add_product";
     }
     @GetMapping("/category")
@@ -108,5 +118,20 @@ public class AdminController {
         }
 
         return "redirect:/admin/loadEditCategory/" + category.getId();
+    }
+    @PostMapping("/saveProduct")
+    public String saveProduct(@ModelAttribute Product product, @RequestParam("file")MultipartFile image, HttpSession session) throws IOException{
+        Product saveProduct = productService.saveProduct(product);
+        String imageName =  image.isEmpty() ? "default.png" : image.getOriginalFilename();
+        product.setImage(imageName);
+        if(!ObjectUtils.isEmpty(saveProduct)){
+            File saveFile = new ClassPathResource("static/img").getFile();
+            Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "product_img" + File.separator+image.getOriginalFilename());
+            Files.copy(image.getInputStream(), path,StandardCopyOption.REPLACE_EXISTING);
+            session.setAttribute("successMsg", "product successfully added");
+        }else{
+            session.setAttribute("errorMsg", "something wrong on server");
+        }
+        return "redirect:/admin/loadAddProduct";
     }
 }
