@@ -120,24 +120,45 @@ public class AdminController {
         return "redirect:/admin/loadEditCategory/" + category.getId();
     }
     @PostMapping("/saveProduct")
-    public String saveProduct(@ModelAttribute Product product, @RequestParam("file")MultipartFile image, HttpSession session) throws IOException{
-        Product saveProduct = productService.saveProduct(product);
-        String imageName =  image.isEmpty() ? "default.png" : image.getOriginalFilename();
+    public String saveProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile image,
+                              HttpSession session) throws IOException {
+
+        String imageName = image.isEmpty() ? "default.jpg" : image.getOriginalFilename();
+
         product.setImage(imageName);
-        if(!ObjectUtils.isEmpty(saveProduct)){
+        Product saveProduct = productService.saveProduct(product);
+
+        if (!ObjectUtils.isEmpty(saveProduct)) {
+
             File saveFile = new ClassPathResource("static/img").getFile();
-            Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "product_img" + File.separator+image.getOriginalFilename());
-            Files.copy(image.getInputStream(), path,StandardCopyOption.REPLACE_EXISTING);
-            session.setAttribute("successMsg", "product successfully added");
-        }else{
+
+            Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "product_img" + File.separator
+                    + image.getOriginalFilename());
+
+            // System.out.println(path);
+            Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+            session.setAttribute("successMsg", "Product Saved Success");
+        } else {
             session.setAttribute("errorMsg", "something wrong on server");
         }
+
         return "redirect:/admin/loadAddProduct";
     }
+
     @GetMapping("/products")
     public String loadViewProduct(Model model){
        model.addAttribute("products", productService.getAllProducts());
         return "admin/products";
     }
-
+    @GetMapping("/deleteProduct/{id}")
+    public String deleteProduct(@PathVariable int id,HttpSession session){
+        Boolean deletedProduct = productService.deleteProduct(id);
+        if(deletedProduct){
+            session.setAttribute("successMsg","Product delete successfully");
+        }else{
+            session.setAttribute("errorMsg", "something wrong on the server");
+        }
+        return "redirect:/admin/products";
+    }
 }
