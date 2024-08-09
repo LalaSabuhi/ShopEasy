@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="base::layout(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <section>
+        <div class="container mt-5 p-5">
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <div class="card card-sh">
+                        <div class="card-header text-center">
+                            <p class="fs-4">View Product</p>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">S1 No</th>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Stock</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="product,p:${products}">
+                                    <th scope="row">[[${p.count}]]</th>
+                                    <td><img th:src="@{'/img/product_img/'+${product.image}}" width="50px" height="50px"></td>
+                                    <td>[[${product.title}]]</td>
+                                    <td>[[${product.category}]]</td>
+                                    <td>[[${product.price}]]</td>
+                                    <td>[[${product.stock}]]</td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary btn-sm">
+                                            <i class="fa-solid fa-pen-to-square  fa-1x">  Edit</i>
+                                        </a>
+                                        <a href="#" class="btn btn-danger btn-sm">
+                                            <i class="fa-solid fa-trash fa-1x">  Delete</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

@@ -112,7 +112,7 @@ public class AdminController {
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             }
 
-            session.setAttribute("succMsg", "Category update success");
+            session.setAttribute("successMsg", "Category update success");
         } else {
             session.setAttribute("errorMsg", "something wrong on server");
         }
@@ -134,4 +134,10 @@ public class AdminController {
         }
         return "redirect:/admin/loadAddProduct";
     }
+    @GetMapping("/products")
+    public String loadViewProduct(Model model){
+       model.addAttribute("products", productService.getAllProducts());
+        return "admin/products";
+    }
+
 }
