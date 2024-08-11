@@ -157,6 +157,37 @@ public class AdminController {
         model.addAttribute("categories",categoryService.getAllCategory());
         return "admin/edit_product";
     }
+    @PostMapping("/updateProduct")
+    public String updateProduct(@ModelAttribute Product product, HttpSession session, @RequestParam("file")MultipartFile file)
+    throws  Exception{
+        Product oldProduct = productService.findProductById(product.getId());
+        String imageName = file.isEmpty() ? oldProduct.getImage() : file.getOriginalFilename();
+
+        if (!ObjectUtils.isEmpty(product)) {
+            oldProduct.setTitle(product.getTitle());
+            oldProduct.setDescription(product.getDescription());
+            oldProduct.setPrice(product.getPrice());
+            oldProduct.setCategory(product.getCategory());
+            oldProduct.setIsActive(product.getIsActive());
+            oldProduct.setImage(imageName);
+        }
+        Product updateProduct = productService.saveProduct(oldProduct);
+        if (!ObjectUtils.isEmpty(updateProduct)) {
+            if (!file.isEmpty()) {
+                File saveFile = new ClassPathResource("static/img").getFile();
+                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "product_img" + File.separator
+                        + file.getOriginalFilename());
+                // System.out.println(path);
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            session.setAttribute("successMsg", "Product update success");
+        } else {
+            session.setAttribute("errorMsg", "something wrong on server");
+        }
+        return "redirect:/admin/editProduct/" + product.getId();
+    }
+
     @GetMapping("/deleteProduct/{id}")
     public String deleteProduct(@PathVariable int id,HttpSession session){
         Boolean deletedProduct = productService.deleteProduct(id);

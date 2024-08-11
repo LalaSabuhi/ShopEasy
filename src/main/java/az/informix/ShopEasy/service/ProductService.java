@@ -11,4 +11,5 @@ public interface ProductService {
     public List<Product> getAllProducts();
     public Boolean deleteProduct(Integer id);
     public Product findProductById(Integer id);
+
 }
