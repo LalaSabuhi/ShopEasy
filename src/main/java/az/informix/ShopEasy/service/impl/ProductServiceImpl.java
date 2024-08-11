@@ -34,4 +34,9 @@ public class ProductServiceImpl implements ProductService {
         }
        return false;
     }
+
+    @Override
+    public Product findProductById(Integer id) {
+        return productRepository.findById(id).orElse(null);
+    }
 }

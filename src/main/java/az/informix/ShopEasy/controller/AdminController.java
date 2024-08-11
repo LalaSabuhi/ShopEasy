@@ -151,6 +151,12 @@ public class AdminController {
        model.addAttribute("products", productService.getAllProducts());
         return "admin/products";
     }
+    @GetMapping("/editProduct/{id}")
+    public String editProduct(Model model, @PathVariable int id){
+        model.addAttribute("product", productService.findProductById(id));
+        model.addAttribute("categories",categoryService.getAllCategory());
+        return "admin/edit_product";
+    }
     @GetMapping("/deleteProduct/{id}")
     public String deleteProduct(@PathVariable int id,HttpSession session){
         Boolean deletedProduct = productService.deleteProduct(id);
@@ -162,3 +168,4 @@ public class AdminController {
         return "redirect:/admin/products";
     }
 }
+
