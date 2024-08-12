@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+
 import java.util.List;
 
 @Service
@@ -20,9 +21,26 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(product);
     }
 
+
+    @Override
+    public List<Product> getAllActiveProducts(String category) {
+        List<Product> products;
+        if (ObjectUtils.isEmpty(category)) {
+            // Kateqoriya seçilmədikdə bütün aktiv məhsulları qaytarır
+            products = productRepository.findAll();
+        } else {
+            // Kateqoriya seçildikdə həmin kateqoriyaya uyğun məhsulları qaytarır
+            products = productRepository.findByCategory(category);
+        }
+        return products;
+    }
+
+
+
     @Override
     public List<Product> getAllProducts() {
         List<Product> products = productRepository.findAll();
+
         return products;
     }
 
