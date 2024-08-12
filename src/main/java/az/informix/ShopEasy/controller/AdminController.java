@@ -165,6 +165,9 @@ public class AdminController {
 
         if (!ObjectUtils.isEmpty(product)) {
             oldProduct.setTitle(product.getTitle());
+            oldProduct.setStock(product.getStock());
+            oldProduct.setDiscountPrice(product.getDiscountPrice());
+            oldProduct.setDiscount(product.getDiscount());
             oldProduct.setDescription(product.getDescription());
             oldProduct.setPrice(product.getPrice());
             oldProduct.setCategory(product.getCategory());

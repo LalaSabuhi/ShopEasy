@@ -24,4 +24,6 @@ public class Product {
     private int stock;
     private String image;
     private Boolean isActive;
+    private Integer discount;
+    private Double discountPrice;
 }
