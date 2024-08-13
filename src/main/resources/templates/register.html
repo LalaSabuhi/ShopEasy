@@ -16,10 +16,18 @@
                     <div class="card shadow-sm p-3 mb-5 bg-body rounded">
                         <div class="card-header">
                             <p class="fs-4 text-center">Register</p>
+                            <th:block th:if="${session.successMsg}">
+                                <p class="text-success fw-bold">[[${session.successMsg}]]</p>
+                                <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+                            </th:block>
+                            <th:block th:if="${session.errorMsg}">
+                                <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+                                <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+                            </th:block>
                         </div>
                         <div class="card-body">
 
-                            <form>
+                            <form action="/saveUser" method="post" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col">
                                         <label class="form-label">Full Name</label>
@@ -51,7 +59,7 @@
                                     </div>
                                     <div class="col">
                                         <label class="form-label">PinCode</label>
-                                        <input class="form-control" name="pincode" type="number">
+                                        <input class="form-control" name="pincode" type="text">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -66,7 +74,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Profile Image</label>
-                                    <input class="form-control" name="profile_image" type="file">
+                                    <input class="form-control" name="img" type="file">
                                 </div>
 
                                 <button type="submit" class="btn bg-primary text-white col-md-12">Register</button>
