@@ -2,8 +2,10 @@ package az.informix.ShopEasy.controller;
 
 import az.informix.ShopEasy.model.Category;
 import az.informix.ShopEasy.model.Product;
+import az.informix.ShopEasy.model.UserDtls;
 import az.informix.ShopEasy.service.CategoryService;
 import az.informix.ShopEasy.service.ProductService;
+import az.informix.ShopEasy.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import jdk.jfr.Registered;
 import org.apache.catalina.LifecycleState;
@@ -21,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -31,6 +34,17 @@ public class AdminController {
     private CategoryService categoryService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private UserService userService;
+
+    @ModelAttribute
+    public void getUser(Principal p, Model model){
+        if(p != null){
+            String email = p.getName();
+            UserDtls user = userService.getUserByEmail(email);
+            model.addAttribute("user", user);
+        }
+    }
     @GetMapping("/")
     public String index(){
         return "admin/index";

@@ -27,10 +27,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/"><i class="fa-solid fa-house"></i>     Home </a>
+                    <a class="nav-link active" href="/"><i class="fa-solid fa-house"></i>     Home </a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/products">Product</a>
+                    <a class="nav-link active" href="/products">Product</a>
                 </li>
                 <li class="nav-item dropdown active">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -45,15 +45,25 @@
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/signin"><i class="fa-solid fa-right-to-bracket"></i>     LOGIN</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/register">REGISTER</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/admin/"><i class="fa-solid fa-lock"></i>        ADMIN</a>
-                </li>
+                <th:block th:if="${user==null}">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/signin"><i class="fa-solid fa-right-to-bracket"></i>     LOGIN</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link active" href="/register">REGISTER</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link active" href="/admin/"><i class="fa-solid fa-lock"></i>        ADMIN</a>
+                    </li>
+                </th:block>
+                <th:block th:if="${user != null}">
+                    <li class="nav-item active">
+                        <a class="nav-link active" href="/admin/"><i class="fa-solid fa-code"></i> [[${user.name}]]</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link active " href="/logout"><i class="fa-solid fa-right-from-bracket"></i>      Logout</a>
+                    </li>
+                </th:block>
             </ul>
         </div>
     </nav>

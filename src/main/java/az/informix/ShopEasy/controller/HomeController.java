@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
 
 @Controller
 public class HomeController {
@@ -29,6 +30,15 @@ public class HomeController {
     private CategoryService categoryService;
     @Autowired
     private UserService userService;
+
+    @ModelAttribute
+    public void getUser(Principal p, Model model){
+        if(p != null){
+            String email = p.getName();
+            UserDtls user = userService.getUserByEmail(email);
+            model.addAttribute("user", user);
+        }
+    }
     @GetMapping("/")
     public String index(){
         return "index";

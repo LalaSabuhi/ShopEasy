@@ -16,6 +16,12 @@
                 <div class="card shadow-sm p-3 mb-5 bg-body rounded">
                     <div class="card-header">
                         <p class="fs-4 text-center">Login</p>
+                        <div th:if="${param.error}" class="alert alert-danger">
+                            Invalid email and password
+                        </div>
+                        <div th:if="${param.error}" class="alert alert-success">
+                            Logout Successfully
+                        </div>
                     </div>
                     <div class="card-body">
                         <form action="/login" method="post">
