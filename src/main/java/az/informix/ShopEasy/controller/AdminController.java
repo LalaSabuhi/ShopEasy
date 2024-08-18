@@ -44,6 +44,8 @@ public class AdminController {
             UserDtls user = userService.getUserByEmail(email);
             model.addAttribute("user", user);
         }
+        List<Category> allActiveCategory = categoryService.getAllCategory();
+        model.addAttribute("categorys", allActiveCategory);
     }
     @GetMapping("/")
     public String index(){
@@ -214,6 +216,22 @@ public class AdminController {
             session.setAttribute("errorMsg", "something wrong on the server");
         }
         return "redirect:/admin/products";
+    }
+    @GetMapping("/users")
+    public String getAllUser(Model model){
+        List<UserDtls> users = userService.getUsers("ROLE_USER");
+        model.addAttribute("users", users);
+        return "admin/users";
+    }
+    @GetMapping("/updateSts")
+    public String updateUserAccountStatus(@RequestParam Boolean status, @RequestParam Integer id, HttpSession session){
+        Boolean f =userService.updateAccountStatus(id,status);
+        if(f){
+            session.setAttribute("successMsg", "Account Status Updated");
+        }else{
+            session.setAttribute("errorMsg", "Something went wrong");
+        }
+        return "redirect:/admin/users";
     }
 }
 

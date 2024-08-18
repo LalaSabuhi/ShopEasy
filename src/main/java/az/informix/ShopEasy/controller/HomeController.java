@@ -1,5 +1,6 @@
 package az.informix.ShopEasy.controller;
 
+import az.informix.ShopEasy.model.Category;
 import az.informix.ShopEasy.model.Product;
 import az.informix.ShopEasy.model.UserDtls;
 import az.informix.ShopEasy.service.CategoryService;
@@ -21,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -38,6 +40,8 @@ public class HomeController {
             UserDtls user = userService.getUserByEmail(email);
             model.addAttribute("user", user);
         }
+        List<Category> allActiveCategory = categoryService.getAllCategory();
+        model.addAttribute("categorys", allActiveCategory);
     }
     @GetMapping("/")
     public String index(){
