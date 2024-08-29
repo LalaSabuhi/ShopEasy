@@ -68,6 +68,14 @@ public class UserServiceImpl implements UserService {
     public boolean unlockAccountTimeExpired(UserDtls user) {
         long lockTime = user.getLockTime().getTime();
         long unLockTime = lockTime + AppConstant.UNLOCK_DURATION_TIME;
+        long currentTime = System.currentTimeMillis();
+        if(unLockTime<currentTime){
+            user.setAccountNonLocked(true);
+            user.setFailedAttempt(0);
+            user.setLockTime(null);
+            userRepository.save(user);
+            return true;
+        }
         return false;
     }
 
