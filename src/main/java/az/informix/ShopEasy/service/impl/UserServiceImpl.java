@@ -3,10 +3,12 @@ package az.informix.ShopEasy.service.impl;
 import az.informix.ShopEasy.model.UserDtls;
 import az.informix.ShopEasy.repository.UserRepository;
 import az.informix.ShopEasy.service.UserService;
+import az.informix.ShopEasy.util.AppConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +48,32 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void increaseFailedAttempt(UserDtls user) {
+        int attempt = user.getFailedAttempt()+1;
+        user.setFailedAttempt(attempt);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void userAccountLock(UserDtls user) {
+        user.setAccountNonLocked(false);
+        user.setLockTime(new Date());
+        userRepository.save(user);
+    }
+
+    @Override
+    public boolean unlockAccountTimeExpired(UserDtls user) {
+        long lockTime = user.getLockTime().getTime();
+        long unLockTime = lockTime + AppConstant.UNLOCK_DURATION_TIME;
+        return false;
+    }
+
+    @Override
+    public void resetAttempt(int userId) {
+
     }
 
 }

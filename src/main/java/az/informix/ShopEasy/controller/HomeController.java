@@ -70,21 +70,28 @@ public class HomeController {
         return "view_product";
     }
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute UserDtls user, @RequestParam("img") MultipartFile file, HttpSession session)throws IOException {
-        String imageName = file.isEmpty() ? "default.png" : file.getOriginalFilename();
+    public String saveUser(@ModelAttribute UserDtls user, @RequestParam("img") MultipartFile file, HttpSession session)
+            throws IOException {
+
+        String imageName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
         user.setProfileImage(imageName);
         UserDtls saveUser = userService.saveUser(user);
 
-        if(!ObjectUtils.isEmpty(saveUser)){
-            if(!file.isEmpty()){
+        if (!ObjectUtils.isEmpty(saveUser)) {
+            if (!file.isEmpty()) {
                 File saveFile = new ClassPathResource("static/img").getFile();
-                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "profile_img" + File.separator + file.getOriginalFilename());
+
+                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "profile_img" + File.separator
+                        + file.getOriginalFilename());
+
+//				System.out.println(path);
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             }
-            session.setAttribute("successMsg", "register successfully");
-        }else{
-            session.setAttribute("errorMsg", "something went wrong");
+            session.setAttribute("successMsg", "Register successfully");
+        } else {
+            session.setAttribute("errorMsg", "something wrong on server");
         }
+
         return "redirect:/register";
     }
 
