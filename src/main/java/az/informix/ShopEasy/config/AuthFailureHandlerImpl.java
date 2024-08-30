@@ -1,19 +1,20 @@
 package az.informix.ShopEasy.config;
+import java.io.IOException;
 
 import az.informix.ShopEasy.model.UserDtls;
+import az.informix.ShopEasy.util.AppConstant;
 import az.informix.ShopEasy.repository.UserRepository;
 import az.informix.ShopEasy.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
+
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.LockedException;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.stereotype.Component;
-import az.informix.ShopEasy.util.AppConstant;
-
-import javax.naming.AuthenticationException;
-import java.io.IOException;
 
 @Component
 public class AuthFailureHandlerImpl extends SimpleUrlAuthenticationFailureHandler {
