@@ -94,5 +94,9 @@ public class HomeController {
 
         return "redirect:/register";
     }
+    @GetMapping("/forgot-password")
+    public String shorForgotPassword(){
+        return "forgot_password";
+    }
 
 }
